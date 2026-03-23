@@ -12,18 +12,17 @@ services:
     networks:
       - helios-network
 
-  # 2. 백엔드 설정 수정
+  # 2. 백엔드
   helios-backend:
     build: ./helios_backend
     container_name: helios-backend
     depends_on:
-      - helios-db # DB가 먼저 실행되어야 함
+      - helios-db # DB가 먼저 시작되도록 설정
     environment:
-      # 주소를 localhost 대신 컨테이너 이름인 helios-db로 변경
       - SPRING_DATASOURCE_URL=jdbc:postgresql://helios-db:5432/helios_db
       - SPRING_DATASOURCE_USERNAME=helios_user
       - SPRING_DATASOURCE_PASSWORD=helios4
-      - AI_SERVER_URL=http://helios-ai:8080
+      - AI_SERVER_URL=http://helios-ai:8000
     ports:
       - "8081:8081"
     networks:
@@ -37,6 +36,19 @@ services:
       - "3000:80"
     networks:
       - helios-network
+
+  # AI 서버
+  helios-ai:
+    build: ./helios_ai 
+    container_name: helios-ai
+    environment:
+      - SPRING_BOOT_URL=http://helios-backend:8081
+    ports:
+      - "8083:8083"    # 웹소켓이나 다른 통신용
+      - "8080:8000"    # 백엔드와 통신용
+    networks:
+      - helios-network
+    restart: always    # 오류 시 자동 재시작
 
 networks:
   helios-network:
