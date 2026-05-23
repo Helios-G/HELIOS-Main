@@ -3,3 +3,6 @@ helios_ai/
 Heliosclient/
 postgres_data/
 .vscode/
+.superpowers/
+.venv*/
+.DS_Store
