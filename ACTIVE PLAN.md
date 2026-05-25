@@ -38,4 +38,4 @@ tags: []
 
 ## Current Task Record
 
-- Active task directory: `worklogs/2026-05-24_01-20_v01_xray-lesion-segmentation`
+- Active task directory: `worklogs/2026-05-25_17-10_v01_server-segmentation-training-handoff`
