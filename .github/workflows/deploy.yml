@@ -35,7 +35,7 @@ jobs:
             cd ~/helios
             git pull --recurse-submodules
             docker compose down
-            docker compose up -d --build
+            docker compose up -d --build --no-deps helios-backend helios-ai
 
       # React 빌드 결과물 EC2로 전송
       - name: Copy React build to EC2
