@@ -32,13 +32,13 @@ services:
       - helios-network
 
   # 프론트엔드
-  helios-client:
-    build: ./Heliosclient
-    container_name: helios-client
-    ports:
-      - "3000:80"
-    networks:
-      - helios-network
+  # helios-client:
+  #   build: ./Heliosclient
+  #   container_name: helios-client
+  #   ports:
+  #     - "3000:80"
+  #   networks:
+  #     - helios-network
 
   # AI 서버
   helios-ai:
