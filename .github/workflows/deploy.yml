@@ -1,0 +1,49 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+  repository_dispatch:
+    types: [submodule-updated]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: ${{ secrets.PAT_TOKEN }}
+
+      # React 빌드 (GitHub Actions 서버에서)
+      - name: Build React
+        working-directory: ./Heliosclient
+        run: |
+          npm install
+          npm run build
+
+      # EC2에 배포
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd ~/helios
+            git pull --recurse-submodules
+            docker compose down
+            docker compose up -d --build
+
+      # React 빌드 결과물 EC2로 전송
+      - name: Copy React build to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "./Heliosclient/build/*"
+          target: "/var/www/helios"
+          strip_components: 2
