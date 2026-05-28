@@ -1,27 +1,30 @@
 services:
-  # 1. PostgreSQL DB 컨테이너 추가
-  helios-db:
-    image: postgres:15-alpine
-    container_name: helios-db
-    environment:
-      - POSTGRES_DB=helios_db      
-      - POSTGRES_USER=helios_user  
-      - POSTGRES_PASSWORD=helios4    
-    ports:
-      - "5432:5432"
-    networks:
-      - helios-network
+  # 1. PostgreSQL DB 컨테이너 (RDS연결로 대체)
+  # helios-db:
+  #   image: postgres:15-alpine
+  #   container_name: helios-db
+  #   environment:
+  #     - POSTGRES_DB=helios_db      
+  #     - POSTGRES_USER=helios_user  
+  #     - POSTGRES_PASSWORD=helios4    
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - helios-network
+  
 
   # 2. 백엔드
   helios-backend:
     build: ./helios_backend
     container_name: helios-backend
-    depends_on:
-      - helios-db # DB가 먼저 시작되도록 설정
+    # depends_on:
+    #  - helios-db # DB가 먼저 시작되도록 설정
+    env_file:
+      - ./helios_backend/.env
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://helios-db:5432/helios_db
-      - SPRING_DATASOURCE_USERNAME=helios_user
-      - SPRING_DATASOURCE_PASSWORD=helios4
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://helios-db.cxyqa4iwel41.ap-northeast-2.rds.amazonaws.com:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - AI_SERVER_URL=http://helios-ai:8000
     ports:
       - "8081:8081"

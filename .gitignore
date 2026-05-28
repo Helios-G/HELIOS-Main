@@ -3,3 +3,4 @@ helios_ai/
 Heliosclient/
 postgres_data/
 .vscode/
+.env
