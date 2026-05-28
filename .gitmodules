@@ -1,0 +1,9 @@
+[submodule "helios_backend"]
+	path = helios_backend
+	url = https://github.com/Helios-G/Helios_server
+[submodule "Heliosclient"]
+	path = Heliosclient
+	url = https://github.com/Helios-G/Heliosclient
+[submodule "helios_ai"]
+	path = helios_ai
+	url = https://github.com/Helios-G/Helios_ai
