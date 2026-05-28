@@ -21,7 +21,7 @@ jobs:
       - name: Build React
         working-directory: ./Heliosclient
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run build
 
       # EC2에 배포
