@@ -20,6 +20,8 @@ jobs:
       # React 빌드 (GitHub Actions 서버에서)
       - name: Build React
         working-directory: ./Heliosclient
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
           npm install --legacy-peer-deps
           npm run build
