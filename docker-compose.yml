@@ -47,7 +47,6 @@ services:
     environment:
       - SPRING_BOOT_URL=http://helios-backend:8081
     ports:
-      - "8083:8083"    # 웹소켓이나 다른 통신용
       - "8080:8000"    # 백엔드와 통신용
     networks:
       - helios-network
